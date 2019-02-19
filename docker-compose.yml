@@ -1,0 +1,11 @@
+version: "2.4"
+
+services:
+  lib:
+    image: vovimayhem/authegy:development
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+    - .:/usr/src
