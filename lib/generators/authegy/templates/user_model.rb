@@ -8,8 +8,11 @@ class User < Authegy::User
   # Authegy::User class already includes associations to :person,
   # and delegations to :person such as :email, :has_role?, etc.
 
-  # Include devise modules. Others available are:
+  # The `Authegy::User` class also includes the :database_authenticatable and
+  # :validatable modules, with some modifications so it uses the Person.email
+  # field for authentication instead.
+
+  # You may include additional devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable_with_person_email, :registerable,
-         :recoverable, :rememberable, :validatable_with_person_email
+  devise :registerable, :recoverable, :rememberable
 end
