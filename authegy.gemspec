@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
                        ' role-based authorization.'
   spec.description   = 'Opinionated app strategy used for authentication &' \
                        ' role-based authorization.'
-  spec.homepage      = 'https://github.com/IcaliaLabs/authegy'
+  spec.homepage      = 'https://github.com/vovimayhem/authegy'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the
@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
     spec.metadata['allowed_push_host'] = 'http://rubygems.org'
 
     spec.metadata['homepage_uri'] = spec.homepage
-    spec.metadata['source_code_uri'] = 'https://github.com/IcaliaLabs/authegy'
+    spec.metadata['source_code_uri'] = 'https://github.com/vovimayhem/authegy'
     spec.metadata['changelog_uri'] = spec.metadata['source_code_uri'] +
                                      '/blob/master/CHANGELOG.md'
   else
@@ -39,14 +39,20 @@ Gem::Specification.new do |spec|
       f.match(%r{^(test|spec|features)/})
     end
   end
+
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'rails', '~> 5.2'
+
   spec.add_dependency 'devise', '~> 4.6', '>= 4.6.1'
+
+  spec.add_development_dependency 'sqlite3', '~> 1.3.6'
 
   spec.add_development_dependency 'bundler', '~> 1.17'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'rspec-rails'
 end
 # rubocop:enable Metrics/BlockLength

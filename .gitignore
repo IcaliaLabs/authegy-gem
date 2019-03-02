@@ -1,4 +1,4 @@
-/.bundle/
+.bundle/
 /.yardoc
 /_yardoc/
 /coverage/
@@ -6,6 +6,7 @@
 /pkg/
 /spec/reports/
 /tmp/
+.local
 
 # rspec failure tracking
 .rspec_status
@@ -19,3 +20,15 @@ Gemfile.lock
 
 # Ignore shell history:
 .*_hist*
+
+# Ignore logs:
+log/*.log
+
+# Ignore dummy state:
+spec/dummy/db/*.sqlite3
+spec/dummy/db/*.sqlite3-journal
+spec/dummy/log/*.log
+spec/dummy/node_modules/
+spec/dummy/yarn-error.log
+spec/dummy/storage/
+spec/dummy/tmp/

@@ -1,4 +1,4 @@
-# Icalia Labs A2 gem changelog
+# Authegy Changelog
 
 ## Version 0.0.1
 

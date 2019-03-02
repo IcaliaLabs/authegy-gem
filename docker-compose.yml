@@ -1,11 +1,49 @@
 version: "2.4"
 
+volumes:
+  postgres_data:
+  dummy_node_modules: # See comment below on 'test' service's volume
+
 services:
-  lib:
+  # postgres:
+  #   image: postgres:10.6-alpine
+  #   volumes:
+  #   - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #   - ${AUTHEGY_PGPORT:-5432}:5432
+  #   environment:
+  #     POSTGRES_PASSWORD: 3x4mpl3P455w0rd
+
+  lib: &lib
     image: vovimayhem/authegy:development
     build:
       context: .
       dockerfile: Dockerfile
       target: development
+      args:
+      - DEVELOPER_UID=${UID:-1000}
+      - DEVELOPER_USER=${USER:-you}
     volumes:
+    # Mount our library code directory (".") into our containers at the
+    # "/usr/src" folder:
     - .:/usr/src
+
+    # Keep the stdin open, so we can attach to our app container's process
+    # and do things such as byebug, etc:
+    stdin_open: true
+
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+
+  dummy:
+    <<: *lib
+    entrypoint: /usr/src/bin/dummy-entrypoint.sh
+    ports:
+    - ${AUTHEGY_WEB_PORT:-3000}:3000
+    # depends_on: [ "postgres" ]
+    command: rails server -p 3000 -b 0.0.0.0
+    environment:
+      # We'll set the DATABASE_URL environment variable for the app to connect
+      # to our postgres container - no need to use a 'config/database.yml' file.
+      # DATABASE_URL: postgres://postgres:3x4mpl3P455w0rd@postgres:5432/authegy_development
+      RAILS_ENV: 'development'
