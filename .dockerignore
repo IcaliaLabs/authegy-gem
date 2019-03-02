@@ -24,3 +24,6 @@ Gemfile.lock
 # Ignore docker stuff:
 /Dockerfile
 /docker-compose.yml
+
+# Ignore gem builds
+/authegy-*.gem
