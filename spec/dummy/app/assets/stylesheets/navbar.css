@@ -1,0 +1,24 @@
+nav.navbar {
+  background-color: #000;
+  color: #fff;
+  margin-top: -33px;
+  margin-left: -33px;
+  margin-right: -33px;
+  margin-bottom: 33px;
+
+  padding: 33px;
+  display: flex;
+}
+
+nav.navbar a {
+  color: #fff;
+}
+
+nav.navbar > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+nav.navbar > .spacer {
+  flex-grow: 1;
+}

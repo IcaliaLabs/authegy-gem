@@ -21,15 +21,17 @@ class ModelsGenerator < ActiveRecord::Generators::Base
     # else
       migration_template(
         'models_migration.erb',
-        "#{migration_path}/authegy_create_model_tables.rb",
+        "#{migration_path}/create_authegy_model_tables.rb",
         migration_version: migration_version
       )
     # end
   end
 
   def generate_app_models
-    copy_file 'person_model.rb', 'app/models/person.rb'
-    copy_file 'user_model.rb', 'app/models/user.rb'
+    copy_file 'person_model.rb',          'app/models/person.rb'
+    copy_file 'role_model.rb',            'app/models/role.rb'
+    copy_file 'user_model.rb',            'app/models/user.rb'
+    copy_file 'role_assignment_model.rb', 'app/models/role_assignment.rb'
   end
 
   def rails5_and_up?

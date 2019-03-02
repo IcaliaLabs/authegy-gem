@@ -6,7 +6,7 @@ module Authegy
 
     included do
       has_many :role_assignments,
-               class_name: 'Authegy::RoleAssignment',
+               class_name: '::RoleAssignment',
                inverse_of: :actor,
                foreign_key: :actor_id
 
@@ -18,7 +18,7 @@ module Authegy
 
     def assign_role(role_name, resource_type_or_instance = nil)
       assignment_attributes = {
-        role: Authegy::Role.find_or_create_by(name: role_name)
+        role: ::Role.find_or_create_by(name: role_name)
       }
 
       if resource_type_or_instance.present?

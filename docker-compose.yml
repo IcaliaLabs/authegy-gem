@@ -1,18 +1,9 @@
 version: "2.4"
 
 volumes:
-  postgres_data:
   dummy_node_modules: # See comment below on 'test' service's volume
 
 services:
-  # postgres:
-  #   image: postgres:10.6-alpine
-  #   volumes:
-  #   - postgres_data:/var/lib/postgresql/data
-  #   ports:
-  #   - ${AUTHEGY_PGPORT:-5432}:5432
-  #   environment:
-  #     POSTGRES_PASSWORD: 3x4mpl3P455w0rd
 
   lib: &lib
     image: vovimayhem/authegy:development
@@ -43,7 +34,4 @@ services:
     # depends_on: [ "postgres" ]
     command: rails server -p 3000 -b 0.0.0.0
     environment:
-      # We'll set the DATABASE_URL environment variable for the app to connect
-      # to our postgres container - no need to use a 'config/database.yml' file.
-      # DATABASE_URL: postgres://postgres:3x4mpl3P455w0rd@postgres:5432/authegy_development
       RAILS_ENV: 'development'

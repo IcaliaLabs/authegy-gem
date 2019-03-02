@@ -4,7 +4,7 @@ module Authegy
   # = AuthorizationHelper
   #
   # Methods that deal with defining access to resources by user roles
-  module AuthorizationHelper
+  module ControllerHelpers
     # authorize_action!
     # Usage:
     # ```
