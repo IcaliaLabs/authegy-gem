@@ -19,11 +19,7 @@ class InstallGenerator < Rails::Generators::Base
     generate 'authegy:models People'
   end
 
-  def add_devise_routes
-    route <<~STRING
-      devise_for :users,
-                 path: '/',
-                 path_names: { sign_in: 'sign-in', sign_out: 'sign-out' }
-    STRING
+  def add_autegy_routes
+    route 'authegy_routes'
   end
 end
