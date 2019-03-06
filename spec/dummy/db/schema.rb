@@ -52,8 +52,10 @@ ActiveRecord::Schema.define(version: 2019_03_02_165754) do
   create_table "user_groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.integer "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_user_groups_on_owner_id"
   end
 
   create_table "users", force: :cascade do |t|
