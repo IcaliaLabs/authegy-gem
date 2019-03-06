@@ -15,8 +15,17 @@ module Authegy
     devise :database_authenticatable_with_person_email,
            :validatable_with_person_email
 
-    belongs_to :person, inverse_of: :user, foreign_key: :id
-    delegate :email, :email=, :name, to: :person, allow_nil: true
+    belongs_to :person,
+               class_name: '::Person',
+               inverse_of: :user,
+               foreign_key: :id
+
+    delegate :email, :name, to: :person, allow_nil: true
+
+    def email=(value)
+      return person.email = value if person.present?
+      build_person(email: value).email
+    end
 
     delegate :assigned_roles, :assign_role, :has_role?, :has_any_role?,
              :remove_role, :role_assignments, to: :person

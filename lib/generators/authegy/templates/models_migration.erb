@@ -10,8 +10,8 @@ class CreateAuthegyModelTables < ActiveRecord::Migration<%= migration_version %>
 
   def create_people_table
     create_table :people do |t|
-      t.string :first_name, null: false
-      t.string :last_name, null: false
+      t.string :first_name
+      t.string :last_name
       t.string :email, index: { unique: true }
 
       # Feel free to add additional fields, such as 'nickname', etc:
