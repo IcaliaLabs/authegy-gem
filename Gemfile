@@ -15,3 +15,4 @@ gemspec
 # To use a debugger
 gem 'byebug', group: [:development, :test]
 gem 'pry-rails', group: [:development, :test]
+gem 'i18n', '~> 1.5.3', group: [:development, :test]
