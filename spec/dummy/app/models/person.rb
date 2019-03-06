@@ -6,4 +6,8 @@ class Person < Authegy::Person
   # Authegy::Person already includes validations for the email field, and
   # associations for :user, :role_assignments, :assigned_roles, and methods
   # for authorization, such as :assign_role, :has_role?, etc.
+
+  has_many :groups, class_name: 'UserGroups', inverse_of: :owner
+
+  has_many :authored_posts, class_name: 'GroupPost', inverse_of: :author
 end
