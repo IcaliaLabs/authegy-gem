@@ -16,6 +16,20 @@ module Authegy
   autoload :Role,           'authegy/models/role'
   autoload :User,           'authegy/models/user'
 
+  module Authorization
+    autoload :Rule,             'authegy/authorization/rule'
+    autoload :AccessRuleByRole, 'authegy/authorization/access_rule_by_role'
+    autoload :AccessRuleByAssociation,
+             'authegy/authorization/access_rule_by_association'
+
+    autoload :RuleSet,       'authegy/authorization/rule_set'
+    autoload :AccessRuleSet, 'authegy/authorization/access_rule_set'
+
+    autoload :Helpers,       'authegy/authorization/helpers'
+    autoload :AccessHelpers, 'authegy/authorization/access_helpers'
+    autoload :ActionHelpers, 'authegy/authorization/action_helpers'
+  end
+
   def self.extract_resource_attributes(resource_type_or_instance)
     if resource_type_or_instance.is_a?(String)
       { resource_type: resource_type_or_instance }
