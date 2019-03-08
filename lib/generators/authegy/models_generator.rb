@@ -3,6 +3,9 @@
 require 'rails/generators/active_record'
 require 'generators/authegy/orm_helpers'
 
+#= ModelsGenerator
+#
+# Generates the Authegy models & migrations
 class ModelsGenerator < ActiveRecord::Generators::Base
   namespace 'authegy:models'
   include Authegy::Generators::OrmHelpers
@@ -13,17 +16,18 @@ class ModelsGenerator < ActiveRecord::Generators::Base
            default: [],
            banner: 'field:type field:type'
 
-  # class_option :primary_key_type, type: :string, desc: 'The type for primary key'
-
   def copy_authegy_migration
-    # if (behavior == :invoke && model_exists?) || (behavior == :revoke && migration_exists?(table_name))
-    #   migration_template "migration_existing.rb", "#{migration_path}/add_devise_to_#{table_name}.rb", migration_version: migration_version
+    # if (behavior == :invoke && model_exists?) ||
+    #    (behavior == :revoke && migration_exists?(table_name))
+    #   migration_template "migration_existing.rb",
+    #                      "#{migration_path}/add_devise_to_#{table_name}.rb",
+    #                      migration_version: migration_version
     # else
-      migration_template(
-        'models_migration.erb',
-        "#{migration_path}/create_authegy_model_tables.rb",
-        migration_version: migration_version
-      )
+    migration_template(
+      'models_migration.erb',
+      "#{migration_path}/create_authegy_model_tables.rb",
+      migration_version: migration_version
+    )
     # end
   end
 
@@ -34,13 +38,13 @@ class ModelsGenerator < ActiveRecord::Generators::Base
     copy_file 'role_assignment_model.rb', 'app/models/role_assignment.rb'
   end
 
-  def rails5_and_up?
+  def self.rails5_and_up?
     Rails::VERSION::MAJOR >= 5
   end
 
+  delegate :rails_5_and_up?, to: :class
+
   def migration_version
-    if rails5_and_up?
-      "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
-    end
+    "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]" if rails5_and_up?
   end
 end

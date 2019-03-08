@@ -2,7 +2,9 @@
 
 module ActionDispatch
   module Routing
-    class Mapper
+    # :reek:IrresponsibleModule
+    class Mapper # rubocop:disable Style/Documentation
+      # Generates the Devise routes as required by Authegy
       def authegy_routes(options = {})
         # Remove the keys that would interfere with the authegy way:
         options.extract! :class_name, # We'll only use 'User'
