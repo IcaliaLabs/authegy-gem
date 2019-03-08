@@ -13,6 +13,16 @@ class UserGroupsController < ApplicationController
                        of: 'user_group',
                        to: UserGroup
 
+  # Next, we get to authorize access to the controller's actions:
+  # 1: Only 'super administrators' get to create groups. Although
+  #    'super administrators' bypass the authorization callbacks - they don't
+  #    need this rule to access these actions - this rule will prevent other
+  #    users from accessing the :new and :create actions:
+  authorize_actions :new, :create, to: :super_administrators
+
+  # 2: The group owner gets to update & delete their own groups:
+  authorize_actions :edit, :update, :delete, to: :owners, of: UserGroup
+
   # GET /user_groups
   def index
     @groups = authorized_user_groups.all

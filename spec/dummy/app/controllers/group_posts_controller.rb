@@ -15,8 +15,23 @@ class GroupPostsController < ApplicationController
                        of: 'group_post.group',
                        to: GroupPost
 
-  # Would this be possible??
-  # authorize_access_to GroupPost, for: :moderators, :owners, :members, of: '.group'
+  # Better yet:
+  # authorize_access_to :authors, 'group.owners', 'group.moderators',
+  #                     'group.members', of: GroupPost
+
+  # authorize(:authors, 'group.owners', 'group.moderators', 'group.members')
+  #   .to_access(GroupPost)
+  #   .on :
+
+  # # `to_access` is an alias of `of`
+  # authorize('group.members').of(UserGroup).to_call :new, :create
+
+  # Next, we get to authorize access to the controller's actions:
+  authorize_actions :new, :create, to: 'group.members', of: GroupPost
+
+  authorize_actions :edit, :update, :delete,
+                    to: 'authors, group.moderators',
+                    of: GroupPost
 
   # GET /group_posts
   def index

@@ -8,38 +8,11 @@ module Authegy
     module Helpers
       extend ActiveSupport::Concern
 
-      CALLBACKS = %i[run_resource_authorization].freeze
+      CALLBACKS = %i[run_resource_authorization run_action_authorization].freeze
 
       included do
         include Authegy::Authorization::AccessHelpers
-      end
-
-      # :nodoc:
-      # Reek complains about multiple calls to `request.env` and/or not refering
-      # to object state...
-      define_method(:auth_request_env) { request.env }
-
-      define_method(:current_user_roles) { current_user.roles }
-      define_method(:authorized_roles) { auth_request_env['authorized_roles'] }
-      #
-      # def match_roles_on
-      #   auth_request_env['match_roles_on']
-      # end
-
-      def self.parse_given_roles(given_roles = [])
-        given_roles = [:administrator] unless given_roles.any?
-        options = given_roles.last.is_a?(Hash) ? given_roles.pop.with_indifferent_access : {}
-        [given_roles, options]
-      end
-
-      # :nodoc: Taken from IcaliaLabs/foresight
-      def reduce_scope_by_authorization(scope)
-        return scope unless must_match_user_roles?
-        scope.scoped_by_user_roles allowed_roles, match_roles_on
-      end
-
-      def must_match_user_roles?
-        allowed_roles.present? && match_roles_on.present?
+        include Authegy::Authorization::ActionHelpers
       end
 
       def self.normalize_items_on_dsl(item_list)

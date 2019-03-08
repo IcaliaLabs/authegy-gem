@@ -22,6 +22,7 @@ module Authegy
 
     autoload :RuleSet,       'authegy/authorization/rule_set'
     autoload :AccessRuleSet, 'authegy/authorization/access_rule_set'
+    autoload :ActionRuleSet, 'authegy/authorization/action_rule_set'
 
     autoload :Helpers,       'authegy/authorization/helpers'
     autoload :AccessHelpers, 'authegy/authorization/access_helpers'
