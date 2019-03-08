@@ -23,8 +23,11 @@ module Authegy
     delegate :email, :name, to: :person, allow_nil: true
 
     def email=(value)
-      return person.email = value if person.present?
-      build_person(email: value).email
+      if person.present?
+        person.email = value
+      else
+        build_person(email: value).email
+      end
     end
 
     delegate :assigned_roles, :assign_role, :has_role?, :has_any_role?,

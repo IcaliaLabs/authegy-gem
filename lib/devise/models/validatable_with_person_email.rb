@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Devise
   module Models
-    #= ValidatableWithPersonEmail
+    #= Devise::Models::ValidatableWithPersonEmail
     #
     # A re-implementation of Devise::Models::Validatable, but instead of
     # expecting the `email` field to be in the authenticatable model, is located
@@ -19,6 +21,10 @@ module Devise
         validate :person_email_must_be_present
       end
 
+      #= Devise::Models::ValidatableWithPersonEmail::ClassMethods
+      #
+      # Module that registers the Devise::Models::ValidatableWithPersonEmail as
+      # a Devise model module
       module ClassMethods
         Devise::Models.config self, :email_regexp, :password_length
       end
@@ -34,6 +40,7 @@ module Devise
 
       def person_email_must_be_present
         return if person&.email.present?
+
         errors.add :base, 'Person email must be present'
       end
     end
