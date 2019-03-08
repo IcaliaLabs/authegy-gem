@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Authegy
+  #= Authegy::Authorizable
+  #
+  # Methods applied to the "authorizable" model - The Person model.
   module Authorizable
     extend ActiveSupport::Concern
 
@@ -30,18 +33,16 @@ module Authegy
     end
 
     def has_role?(role_name, resource_type_or_instance = nil)
-      matching_attributes = { role: role_name.to_s }
+      role_to_match = role_name.to_s
 
-      return role_assignment_list.select do |assignment|
-        assignment[:role] == matching_attributes[:role]
-      end.any? if resource_type_or_instance.blank?
+      return role_assignments_having_role(role_to_match).any? \
+        if resource_type_or_instance.blank?
 
-      matching_attributes.merge! Authegy
-          .extract_resource_attributes(resource_type_or_instance)
+      attributes_to_match = Authegy.extract_resource_attributes(
+        resource_type_or_instance
+      ).merge! role: role_to_match
 
-      role_assignment_list.select do |assignment|
-        assignment == matching_attributes
-      end.any?
+      role_assignments_having_attributes(attributes_to_match).any?
     end
 
     private
@@ -51,6 +52,18 @@ module Authegy
         assgn.attributes.slice('resource_type', 'resource_id').merge!(
           role: assgn.role.name
         ).symbolize_keys!
+      end
+    end
+
+    def role_assignments_having_role(role_to_match)
+      role_assignment_list.select do |assignment|
+        assignment[:role] == role_to_match
+      end
+    end
+
+    def role_assignments_having_attributes(attributes_to_match)
+      role_assignment_list.select do |assignment|
+        assignment == attributes_to_match
       end
     end
   end

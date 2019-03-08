@@ -1,7 +1,13 @@
+# frozen_string_literal: true
+
 require 'active_support/dependencies'
 require 'devise'
 require 'authegy/engine'
 
+#= Authegy
+#
+# Authegy is an opinionated library that states a simple-yet-comprehensive way
+# of operating Users, Roles, etc in a rails app.
 module Authegy
   autoload :Authorizable,   'authegy/authorizable'
 
@@ -10,18 +16,16 @@ module Authegy
   autoload :Role,           'authegy/models/role'
   autoload :User,           'authegy/models/user'
 
-  autoload :ControllerHelpers, 'authegy/controller_helpers'
-
   def self.extract_resource_attributes(resource_type_or_instance)
-    return { resource_type: resource_type_or_instance } \
-      if resource_type_or_instance.is_a? String
-
-    return { resource_type: resource_type_or_instance.name } \
-      if resource_type_or_instance.is_a? Class
-
-    return {
-      resource_type: resource_type_or_instance.class.name,
-      resource_id: resource_type_or_instance.id
-    } if resource_type_or_instance.respond_to? :id
+    if resource_type_or_instance.is_a?(String)
+      { resource_type: resource_type_or_instance }
+    elsif resource_type_or_instance.is_a?(Class)
+      { resource_type: resource_type_or_instance.name }
+    elsif resource_type_or_instance.respond_to?(:id)
+      {
+        resource_type: resource_type_or_instance.class.name,
+        resource_id: resource_type_or_instance.id
+      }
+    end
   end
 end

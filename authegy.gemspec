@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'authegy/version'
@@ -35,10 +37,10 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added
   # into git.
   spec.files = Dir[
-    "{app,config,lib}/**/*",
-    "CHANGELOG.md",
-    "MIT-LICENSE",
-    "README.md"
+    '{app,config,lib}/**/*',
+    'CHANGELOG.md',
+    'LICENSE.md',
+    'README.md'
   ]
 
   spec.bindir        = 'exe'

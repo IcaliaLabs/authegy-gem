@@ -2,10 +2,12 @@
 
 require 'rails/generators/base'
 
+#= InstallGenerator
+#
+# Generates the initial Authegy install
 class InstallGenerator < Rails::Generators::Base
   namespace 'authegy:install'
   source_root File.expand_path('templates', __dir__)
-
 
   def generate_customized_devise_install
     generate 'devise:install'
