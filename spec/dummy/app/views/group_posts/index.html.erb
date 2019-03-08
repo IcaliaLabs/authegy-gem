@@ -14,15 +14,15 @@
   </thead>
 
   <tbody>
-    <% @group_posts.each do |group_post| %>
+    <% @posts.each do |post| %>
       <tr>
-        <td><%= group_post.group %></td>
-        <td><%= group_post.author %></td>
-        <td><%= group_post.title %></td>
-        <td><%= group_post.body %></td>
-        <td><%= link_to 'Show', group_post %></td>
-        <td><%= link_to 'Edit', edit_group_post_path(group_post) %></td>
-        <td><%= link_to 'Destroy', group_post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= post.group.name %></td>
+        <td><%= post.author.first_name %> <%= post.author.last_name %></td>
+        <td><%= post.title %></td>
+        <td><%= post.body %></td>
+        <td><%= link_to 'Show', group_post_path(post.group, post) %></td>
+        <td><%= link_to 'Edit', edit_group_post_path(post.group, post) %></td>
+        <td><%= link_to 'Destroy', group_post_path(post.group, post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -30,4 +30,4 @@
 
 <br>
 
-<%= link_to 'New Group Post', new_group_post_path %>
+<%= link_to 'New Group Post', new_group_post_path(params[:group_id]) %>

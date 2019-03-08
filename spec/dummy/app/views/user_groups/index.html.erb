@@ -12,14 +12,14 @@
   </thead>
 
   <tbody>
-    <% @user_groups.each do |user_group| %>
+    <% @groups.each do |group| %>
       <tr>
-        <td><%= user_group.name %></td>
-        <td><%= user_group.description %></td>
-        <td><%= link_to 'Show', user_group %></td>
+        <td><%= group.name %></td>
+        <td><%= group.description %></td>
+        <td><%= link_to 'Show', group_posts_path(group) %></td>
         <%- if current_user&.has_role? :administrator %>
-          <td><%= link_to 'Edit', edit_user_group_path(user_group) %></td>
-          <td><%= link_to 'Destroy', user_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Edit', edit_group_path(group) %></td>
+          <td><%= link_to 'Destroy', group_path(group), method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end -%>
       </tr>
     <% end %>
@@ -29,5 +29,5 @@
 <br>
 
 <%- if current_user&.has_role? :administrator %>
-  <%= link_to 'New User Group', new_user_group_path %>
+  <%= link_to 'New User Group', new_group_path %>
 <% end -%>

@@ -20,5 +20,20 @@ module Authegy
                         if: :will_save_change_to_email?
 
     has_one :user, class_name: '::User', inverse_of: :person, foreign_key: :id
+
+    def self.having_role(role_name, resource = nil)
+      roles = ::Role.arel_table
+      role_assignments = ::RoleAssignment.arel_table
+
+      condition_arel = roles[:name].eq role_name.to_s
+
+      if resource.nil?
+        condition_arel = condition_arel
+          .and(role_assignments[:resource_type].eq(nil))
+          .and(role_assignments[:resource_id].eq(nil))
+      end
+
+      joins(:assigned_roles).where condition_arel
+    end
   end
 end
