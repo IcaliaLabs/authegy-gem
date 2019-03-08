@@ -2,6 +2,10 @@
 
 module Authegy
   module Authorization
+    #= Authegy::Authorization::RuleSet
+    #
+    # Base class used to express authorization rules as a Ruby object, and as a
+    # SQL query
     class RuleSet
       include Enumerable
 
@@ -77,12 +81,8 @@ module Authegy
 
         return if class_to_reflect.blank?
 
-        subject_plural = subject.to_s.pluralize
-        subject_singular = subject.to_s.singularize
-
-        subject_reflection = class_to_reflect.reflect_on_association(subject_singular)
-        subject_reflection ||= class_to_reflect.reflect_on_association(subject_plural)
-
+        subject_reflection = reflect_on_association_to_subject class_to_reflect,
+                                                               subject.to_s
         rule_class = subject_reflection ?
           AccessRuleByAssociation :
           AccessRuleByRole
@@ -92,6 +92,17 @@ module Authegy
         [rule_class, reflection_chain]
       end
       delegate :class_and_reflection, to: :class
+
+      def self.reflect_on_association_to_subject(class_to_reflect, subject_name)
+        subject_plural = subject_name.pluralize
+        subject_singular = subject_name.singularize
+
+        subject_reflection = class_to_reflect
+          .reflect_on_association(subject_singular)
+
+        subject_reflection || class_to_reflect
+          .reflect_on_association(subject_plural)
+      end
 
       private
 
