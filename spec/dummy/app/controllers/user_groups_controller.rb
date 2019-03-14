@@ -9,9 +9,7 @@ class UserGroupsController < ApplicationController
   # The first guard on our authorization process, acts upon the @groups and
   # @group variables, hiding records that fail to match the authorization
   # criteria from the results:
-  authorize_access_for :owners, :members, :moderators,
-                       of: 'user_group',
-                       to: UserGroup
+  authorize_access_for :owners, :members, :moderators, to: UserGroup
 
   # GET /user_groups
   def index

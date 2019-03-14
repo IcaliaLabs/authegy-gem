@@ -9,14 +9,8 @@ class GroupPostsController < ApplicationController
   # The first guard on our authorization process, acts upon the @user_groups and
   # @user_group variables, hiding records that fail to match the authorization
   # criteria from the results:
-  authorize_access_for :authors, of: 'group_post', to: GroupPost
-
-  authorize_access_for :owners, :moderators, :members,
-                       of: 'group_post.group',
-                       to: GroupPost
-
-  # Would this be possible??
-  # authorize_access_to GroupPost, for: :moderators, :owners, :members, of: '.group'
+  authorize_access_for 'authors', 'group.owners', 'group.moderators',
+                       'group.members', to: GroupPost
 
   # GET /group_posts
   def index

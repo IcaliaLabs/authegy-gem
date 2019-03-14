@@ -14,16 +14,22 @@ module Authegy
       end
 
       module ClassMethods
-        def authorize_access_for(*args)
-          options = args.last.is_a?(Hash) ? args.pop : {}
-          restrictable_class = options[:to]
-          # Access rules are useless without a class to restrict access to:
-          return unless restrictable_class.present?
+        delegate :normalize_items_on_dsl, to: Helpers
+        def authorize_access_for(*associated_roles, **options)
+          raise ArgumentError, 'missing keyword: to' unless options.key? :to
+
+          # Access rules won't make sense without a class to restrict:
+          return if (restrictable_class = options[:to]).blank?
+
+          # We must assume that access is being given to everybody if no
+          # associated roles were given:
+          associated_roles = [:everybody] if associated_roles.empty?
+          associated_resource = options.fetch :of, restrictable_class
 
           access_authorization
-            .add subject_path: options.fetch(:of, nil),
+            .add subject_path: associated_roles,
                  restrictable_class: restrictable_class,
-                 subjects: Helpers.normalize_items_on_dsl(args)
+                 subjects: normalize_items_on_dsl(associated_roles)
 
           ensure_authorization_callbacks_are_configured
           ensure_authorized_scope_helper_is_available_for restrictable_class
