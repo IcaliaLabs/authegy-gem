@@ -10,14 +10,11 @@ module Authegy
     self.abstract_class = true
 
     # Validations from 'validatable':
-    validates_uniqueness_of :email,
-                            allow_blank: true,
-                            if: :will_save_change_to_email?
-
-    validates_format_of :email,
-                        with: Devise.email_regexp,
-                        allow_blank: true,
-                        if: :will_save_change_to_email?
+    validates :email,
+              uniqueness: true,
+              format: Devise.email_regexp,
+              allow_blank: true,
+              if: :will_save_change_to_email?
 
     has_one :user, class_name: '::User', inverse_of: :person, foreign_key: :id
 
