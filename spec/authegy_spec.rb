@@ -1,16 +1,20 @@
 require 'spec_helper'
 
 RSpec.describe 'authegy:install', type: :generator do
-  
-  sample_app_ref =  File.expand_path('../fixtures/sample_app', __FILE__) 
-  sample_app = File.expand_path('../tmp/sample_app', __FILE__)
+  around do |example|
+    # Setup
+    example_app_source_path = File.expand_path('../fixtures/sample_app', __FILE__)
+    example_app_path = File.expand_path('../tmp/sample_app', __FILE__)
+    original_path = Dir.pwd
 
-  before(:all) do
-    FileUtils.cp_r sample_app_ref, sample_app
-  end
-
-  after(:all) do
-    FileUtils.rm_rf sample_app
+    FileUtils.cp_r example_app_source_path, example_app_path
+    Dir.chdir example_app_path
+    
+    example.run
+    
+    # Teardown
+    Dir.chdir original_path
+    FileUtils.rm_rf example_app_path
   end
   
   it "should do something" do
