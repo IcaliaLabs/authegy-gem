@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 RSpec.describe 'authegy:install', type: :generator do
+  def run_generator(generator_name)
+    system "rails g #{generator_name}"
+  end
+
   around do |example|
     # Setup
     example_app_source_path = File.expand_path('../fixtures/sample_app', __FILE__)
@@ -18,6 +22,7 @@ RSpec.describe 'authegy:install', type: :generator do
   end
   
   it "should do something" do
+    run_generator 'authegy:install'
     expect(true).to eq true
   end
 end
