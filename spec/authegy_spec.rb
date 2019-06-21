@@ -21,8 +21,9 @@ RSpec.describe 'authegy:install', type: :generator do
     FileUtils.rm_rf example_app_path
   end
   
-  it "should do something" do
+  it 'runs the devise & authegy installation' do
     run_generator 'authegy:install'
-    expect(true).to eq true
+    expect(File).to exist 'app/models/user.rb'
+    expect(File).to exist 'app/models/person.rb'
   end
 end
