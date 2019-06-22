@@ -37,9 +37,14 @@ RSpec.describe 'authegy:install', type: :generator do
       expect(FileUtils.compare_file(File.expand_path("app/models/person.rb"), File.expand_path("#{templates_path}person_model.rb"))).to be_truthy
       expect(FileUtils.compare_file(File.expand_path("app/models/role.rb"), File.expand_path("#{templates_path}role_model.rb"))).to be_truthy
       expect(FileUtils.compare_file(File.expand_path("app/models/role_assignment.rb"), File.expand_path("#{templates_path}role_assignment_model.rb"))).to be_truthy
-      expect(File.read(File.expand_path("db/migrate/#{migration_file}"))).to eq(render_erb_file("#{templates_path}models_migration.erb"))
+      expect(File.read("db/migrate/#{migration_file}")).to eq render_erb_file("#{templates_path}models_migration.erb")
     end
 
+    it 'should modified the existing files' do
+      run_generator 'authegy:install'
+      expect(File.read("config/initializers/devise.rb")).to include('config.sign_out_via = %i[get delete]')
+      expect(File.read("config/routes.rb")).to include("authegy_routes")
+    end
   end
 end
     
