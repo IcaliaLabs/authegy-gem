@@ -1,14 +1,12 @@
-require 'spec_helper'
+require_relative '../spec_helper'
+require_relative 'authegy_install_spec_helper'
 
 RSpec.describe 'authegy:install', type: :generator do
-  def run_generator(generator_name)
-    system "rails g #{generator_name}"
-  end
 
   around do |example|
     # Setup
-    example_app_source_path = File.expand_path('../fixtures/sample_app', __FILE__)
-    example_app_path = File.expand_path('../tmp/sample_app', __FILE__)
+    example_app_source_path = File.expand_path('../../fixtures/sample_app', __FILE__)
+    example_app_path = File.expand_path('../tmp/', __FILE__)
     original_path = Dir.pwd
 
     FileUtils.cp_r example_app_source_path, example_app_path
