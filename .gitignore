@@ -33,3 +33,6 @@ spec/dummy/tmp/
 
 # Ignore gem builds
 /authegy-*.gem
+
+# Ignore RSpec state:
+spec/examples.txt

@@ -1,5 +1,8 @@
 require 'bundler/setup'
 require 'authegy'
+require 'fileutils'
+require 'byebug'
+require 'pry-rails'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
