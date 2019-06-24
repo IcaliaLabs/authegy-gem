@@ -19,7 +19,7 @@ gemspec
 # To use a debugger
 group :development, :test do
   gem 'i18n', '~> 1.5.3'
-
+  gem 'shoulda-matchers'
   gem 'byebug'
   gem 'pry-rails'
 end
