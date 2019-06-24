@@ -72,7 +72,7 @@ RSpec.describe 'authegy:install', type: :generator do
       expect(File.read("config/initializers/devise.rb")).to include('config.sign_out_via = %i[get delete]')
     end
 
-    it 'should modify the routes file' do
+    it 'should modify the routes config file' do
       expect(File.read("config/routes.rb")).to include("authegy_routes")
     end
   end
