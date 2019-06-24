@@ -12,6 +12,8 @@ RSpec.describe 'authegy:install', type: :generator do
     FileUtils.cp_r example_app_source_path, example_app_path
     Dir.chdir example_app_path
     
+    run_generator 'authegy:install'
+
     example.run
     
     # Teardown
@@ -21,28 +23,56 @@ RSpec.describe 'authegy:install', type: :generator do
 
   context 'runs the devise & authegy installation' do 
   
-    it 'should exist all authegy files' do
-      run_generator 'authegy:install'
+    it 'should exist user model file' do
       expect(File).to exist 'app/models/user.rb'
+    end
+
+    it 'should exist person model file' do
       expect(File).to exist 'app/models/person.rb'
+    end
+
+    it 'should exist role model file' do
       expect(File).to exist 'app/models/role.rb'
+    end
+
+    it 'should exist role assignment model file' do
       expect(File).to exist 'app/models/role_assignment.rb'
+    end
+
+    it 'should exist migration file' do
       expect(File).to exist "db/migrate/#{migration_file}"
     end
 
-    it 'all generated files should have the expected content' do
+    it 'should have the expected content in user model file' do
       templates_path = "../../../lib/generators/authegy/templates/"
-      run_generator 'authegy:install'
       expect(FileUtils.compare_file(File.expand_path("app/models/user.rb"), File.expand_path("#{templates_path}user_model.rb"))).to be_truthy
+    end
+
+    it 'should have the expected content in person model file' do
+      templates_path = "../../../lib/generators/authegy/templates/"
       expect(FileUtils.compare_file(File.expand_path("app/models/person.rb"), File.expand_path("#{templates_path}person_model.rb"))).to be_truthy
+    end
+
+    it 'should have the expected content in role model file' do
+      templates_path = "../../../lib/generators/authegy/templates/"
       expect(FileUtils.compare_file(File.expand_path("app/models/role.rb"), File.expand_path("#{templates_path}role_model.rb"))).to be_truthy
+    end
+
+    it 'should have the expected content in role_assignment model file' do
+      templates_path = "../../../lib/generators/authegy/templates/"
       expect(FileUtils.compare_file(File.expand_path("app/models/role_assignment.rb"), File.expand_path("#{templates_path}role_assignment_model.rb"))).to be_truthy
+    end
+
+    it 'should have the expected content in migration file' do
+      templates_path = "../../../lib/generators/authegy/templates/"
       expect(File.read("db/migrate/#{migration_file}")).to eq render_erb_file("#{templates_path}models_migration.erb")
     end
 
-    it 'should modified the existing files' do
-      run_generator 'authegy:install'
+    it 'should modify the existing devise file' do
       expect(File.read("config/initializers/devise.rb")).to include('config.sign_out_via = %i[get delete]')
+    end
+
+    it 'should modify the routes file' do
       expect(File.read("config/routes.rb")).to include("authegy_routes")
     end
   end
