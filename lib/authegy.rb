@@ -11,10 +11,11 @@ require 'authegy/engine'
 module Authegy
   autoload :Authorizable,   'authegy/authorizable'
 
-  autoload :Person,         'authegy/models/person'
-  autoload :RoleAssignment, 'authegy/models/role_assignment'
-  autoload :Role,           'authegy/models/role'
-  autoload :User,           'authegy/models/user'
+  autoload :ApplicationRecord,         'authegy/models/application_record'
+  autoload :Person,                    'authegy/models/person'
+  autoload :RoleAssignment,            'authegy/models/role_assignment'
+  autoload :Role,                      'authegy/models/role'
+  autoload :User,                      'authegy/models/user'
 
   module Authorization
     autoload :Rule,             'authegy/authorization/rule'
