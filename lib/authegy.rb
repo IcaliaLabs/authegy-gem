@@ -11,7 +11,7 @@ require 'authegy/engine'
 module Authegy
   autoload :Authorizable,   'authegy/authorizable'
 
-  autoload :ExampleClass,              'authegy/models/abstract_record'
+  autoload :AbstractRecord,            'authegy/models/abstract_record'
   autoload :Person,                    'authegy/models/person'
   autoload :RoleAssignment,            'authegy/models/role_assignment'
   autoload :Role,                      'authegy/models/role'
