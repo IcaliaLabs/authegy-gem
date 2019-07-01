@@ -3,9 +3,8 @@
 module Authegy
   #= Authegy::Role
   # A `Role`
-  class Role < ApplicationRecord
+  class Role < Authegy::AbstractRecord
     self.table_name = :roles
-    self.abstract_class = true
 
     validates :name, format: {
       with: /\A[a-z_]+\z/,
