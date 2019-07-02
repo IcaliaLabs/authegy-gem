@@ -22,13 +22,13 @@ module Authegy
       roles = ::Role.arel_table
       role_assignments = ::RoleAssignment.arel_table
 
-      condition_arel = roles[:name].eq role_name.to_s
+      resource_type = resource.nil? ? nil : resource.class.name
+      resource_id = resource&.id
 
-      if resource.nil?
-        condition_arel = condition_arel
-          .and(role_assignments[:resource_type].eq(nil))
-          .and(role_assignments[:resource_id].eq(nil))
-      end
+      condition_arel = roles[:name]
+        .eq(role_name.to_s)
+        .and(role_assignments[:resource_type].eq(resource_type))
+        .and(role_assignments[:resource_id].eq(resource_id))
 
       joins(:assigned_roles).where condition_arel
     end
