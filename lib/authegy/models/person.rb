@@ -4,11 +4,11 @@ module Authegy
   # Person holds the "Profile" for a given User, but we can also have just
   # Person profiles without a user, as is the case for "Board Members"
   class Person < ApplicationRecord
-    self.abstract_class = true
-    
     include Authegy::Authorizable
 
     self.table_name = :people
+    self.abstract_class = true
+
     # Validations from 'validatable':
     validates :email,
               uniqueness: true,

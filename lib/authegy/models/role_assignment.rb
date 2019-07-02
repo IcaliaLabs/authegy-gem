@@ -6,8 +6,8 @@ module Authegy
   # also have just Person profiles without a user, as is the case for
   # "Board Members"
   class RoleAssignment < ApplicationRecord
-    self.abstract_class = true
     self.table_name = :role_assignments
+    self.abstract_class = true
 
     belongs_to :actor, class_name: '::Person', foreign_key: :actor_id
     belongs_to :role
