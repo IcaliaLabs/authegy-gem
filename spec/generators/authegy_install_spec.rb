@@ -1,78 +1,64 @@
 require 'rails_helper'
 
 RSpec.describe 'authegy:install', type: :generator do
-  around do |example|
+  before(:context) do
     # Setup
-    example_app_source_path = File.expand_path('../../fixtures/sample_app', __FILE__)
-    example_app_path = File.expand_path('../tmp/', __FILE__)
-    original_path = Dir.pwd
+    setup_example_app_context 'example_blank_app'
 
-    FileUtils.cp_r example_app_source_path, example_app_path
-    Dir.chdir example_app_path
-    
     run_generator 'authegy:install'
-
-    example.run
-    
-    # Teardown
-    Dir.chdir original_path
-    FileUtils.rm_rf example_app_path
   end
 
-  context 'runs the devise & authegy installation' do 
-  
-    it 'should exist user model file' do
-      expect(File).to exist 'app/models/user.rb'
-    end
+  after(:context) do
+    # Teardown
+    teardown_example_app_context 'example_blank_app'
+  end
 
-    it 'should exist person model file' do
-      expect(File).to exist 'app/models/person.rb'
-    end
+  it 'generates a user model that inherits from Authegy::User' do
+    expect(File).to exist 'app/models/user.rb'
+    contents = File.read 'app/models/user.rb'
+    expect(contents).to include 'class User < Authegy::User'
+  end
 
-    it 'should exist role model file' do
-      expect(File).to exist 'app/models/role.rb'
-    end
+  it 'generates a person model that inherits from Authegy::Person' do
+    expect(File).to exist 'app/models/person.rb'
+    contents = File.read 'app/models/person.rb'
+    expect(contents).to include 'class Person < Authegy::Person'
+  end
 
-    it 'should exist role assignment model file' do
-      expect(File).to exist 'app/models/role_assignment.rb'
-    end
+  it 'generates a role model file that inherits from Authegy::Role' do
+    expect(File).to exist 'app/models/role.rb'
+    contents = File.read 'app/models/role.rb'
+    expect(contents).to include 'class Role < Authegy::Role'
+  end
 
-    it 'should exist migration file' do
-      expect(File).to exist "db/migrate/#{migration_file}"
-    end
+  it 'generates a role assignment model file that inherits from Authegy::RoleAssignment' do
+    expect(File).to exist 'app/models/role_assignment.rb'
+    contents = File.read 'app/models/role_assignment.rb'
+    expect(contents).to include 'class RoleAssignment < Authegy::RoleAssignment'
+  end
 
-    it 'should have the expected content in user model file' do
-      templates_path = "../../../lib/generators/authegy/templates/"
-      expect(FileUtils.compare_file(File.expand_path("app/models/user.rb"), File.expand_path("#{templates_path}user_model.rb"))).to be_truthy
-    end
+  it 'generates the authegy models migration file' do
+    is_expected.to have_migration 'create_authegy_model_tables'
+  end
 
-    it 'should have the expected content in person model file' do
-      templates_path = "../../../lib/generators/authegy/templates/"
-      expect(FileUtils.compare_file(File.expand_path("app/models/person.rb"), File.expand_path("#{templates_path}person_model.rb"))).to be_truthy
-    end
+  it 'should have the expected content in migration file' do
+    contents = migration_contents('create_authegy_model_tables')
 
-    it 'should have the expected content in role model file' do
-      templates_path = "../../../lib/generators/authegy/templates/"
-      expect(FileUtils.compare_file(File.expand_path("app/models/role.rb"), File.expand_path("#{templates_path}role_model.rb"))).to be_truthy
-    end
+    expect(contents).to include 'create_table :people do |t|'
+    expect(contents).to include 'create_table :users do |t|'
+    expect(contents).to include 'create_table :roles do |t|'
+    expect(contents).to include 'create_table :role_assignments do |t|'
+  end
 
-    it 'should have the expected content in role_assignment model file' do
-      templates_path = "../../../lib/generators/authegy/templates/"
-      expect(FileUtils.compare_file(File.expand_path("app/models/role_assignment.rb"), File.expand_path("#{templates_path}role_assignment_model.rb"))).to be_truthy
-    end
+  it 'configures Devise to sign out via get and delete' do
+    devise_initializer_contents = File.read 'config/initializers/devise.rb'
+    expect(devise_initializer_contents)
+      .to include 'config.sign_out_via = %i[get delete]'
+  end
 
-    it 'should have the expected content in migration file' do
-      templates_path = "../../../lib/generators/authegy/templates/"
-      expect(File.read("db/migrate/#{migration_file}")).to eq render_erb_file("#{templates_path}models_migration.erb")
-    end
-
-    it 'should modify the existing devise file' do
-      expect(File.read("config/initializers/devise.rb")).to include('config.sign_out_via = %i[get delete]')
-    end
-
-    it 'should modify the routes config file' do
-      expect(File.read("config/routes.rb")).to include("authegy_routes")
-    end
+  it 'adds the authegy routes to the app' do
+    routes_file_contents = File.read 'config/routes.rb'
+    expect(routes_file_contents).to include 'authegy_routes'
   end
 end
     
