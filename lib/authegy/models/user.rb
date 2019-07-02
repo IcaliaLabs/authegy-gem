@@ -8,7 +8,9 @@ module Authegy
   #
   # Represents a person which is able to sign-in to the application.
   # Users are intended for authentification, the actual profile sits in Person.
-  class User < Authegy::AbstractRecord
+  class User < ApplicationRecord
+    self.abstract_class = true
+    
     self.table_name = :Users
 
     devise :database_authenticatable_with_person_email,

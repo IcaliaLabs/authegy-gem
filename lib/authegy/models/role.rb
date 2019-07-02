@@ -3,7 +3,8 @@
 module Authegy
   #= Authegy::Role
   # A `Role`
-  class Role < Authegy::AbstractRecord
+  class Role < ApplicationRecord
+    self.abstract_class = true
     self.table_name = :roles
 
     validates :name, format: {
