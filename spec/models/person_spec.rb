@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'authegy_authorizable_examples'
 
 RSpec.describe Authegy::Person, type: :model do
   let(:described_class) do |example|
     ::Person
   end
 
-  # include_examples 'of an Authegy::Authorizable model'
+  include_examples 'of an Authegy::Authorizable model'
 
   describe 'validations' do
     it 'validates the uniqueness of :email' do
@@ -36,7 +37,6 @@ RSpec.describe Authegy::Person, type: :model do
   end
 
   describe '.having_role scope' do
-    # admins = People.having_role 'adiministrator'
     let!(:example_role) { ::Role.create! name: 'example_role' }
     let!(:example_person) { described_class.create! email: 'example@email.com' }
 
