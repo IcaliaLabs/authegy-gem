@@ -19,18 +19,17 @@ module Authegy
     has_one :user, class_name: '::User', inverse_of: :person, foreign_key: :id
 
     def self.having_role(role_name, resource = nil)
-      roles = ::Role.arel_table
-      role_assignments = ::RoleAssignment.arel_table
+      role_scope = Role.where(name: role_name.to_s)
 
-      resource_type = resource.nil? ? nil : resource.class.name
-      resource_id = resource&.id
+      role_assignment_scope = ::RoleAssignment
+        .joins(:role)
+        .merge(role_scope)
+        .where(
+          resource_type: (resource.nil? ? nil : resource.class.name),
+          resource_id: resource&.id
+        )
 
-      condition_arel = roles[:name]
-        .eq(role_name.to_s)
-        .and(role_assignments[:resource_type].eq(resource_type))
-        .and(role_assignments[:resource_id].eq(resource_id))
-
-      joins(:assigned_roles).where condition_arel
+      joins(:assigned_roles).merge role_assignment_scope
     end
   end
 end
