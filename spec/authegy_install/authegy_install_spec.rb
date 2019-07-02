@@ -1,8 +1,6 @@
-require_relative '../spec_helper'
-require_relative 'authegy_install_spec_helper'
+require 'rails_helper'
 
 RSpec.describe 'authegy:install', type: :generator do
-
   around do |example|
     # Setup
     example_app_source_path = File.expand_path('../../fixtures/sample_app', __FILE__)
