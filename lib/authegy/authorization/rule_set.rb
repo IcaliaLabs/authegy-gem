@@ -41,7 +41,7 @@ module Authegy
         rules.select { |rule| rule.restrictable_class == restrictable_class }
       end
 
-      delegate :empty?, :any?, to: :rules
+      delegate :empty?, :any?, :each, to: :rules
 
       def add(subjects:, subject_path: nil, restrictable_class: nil)
         path_segments = subject_path.split '.'
