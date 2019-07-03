@@ -7,4 +7,10 @@ RSpec.describe Authegy::User, type: :model do
     ::User
   end
 
+  describe 'persistence' do
+    it "uses the 'users' table" do
+      expect(described_class.table_name).to eq 'users'
+    end
+  end
+
 end
