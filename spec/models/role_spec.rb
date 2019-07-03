@@ -6,6 +6,10 @@ RSpec.describe Authegy::Role, type: :model do
     ::Role
   end
   
-  
+  describe 'persistence' do
+    it "uses the 'roles' table" do
+      expect(described_class.table_name).to eq 'roles'
+    end
+  end
    
 end
