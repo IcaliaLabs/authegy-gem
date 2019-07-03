@@ -7,11 +7,7 @@ RSpec.describe 'Authorization DSL' do
     end
   end
 
-  it 'responds to .access_authorization with a ruleset' do
-    expect(described_class).to respond_to :access_authorization
-    expect(described_class.access_authorization)
-      .to be_kind_of Authegy::Authorization::AccessRuleSet
-  end
+  
 
   it 'responds to .authorize_access_for' do
     expect(described_class).to respond_to :authorize_access_for
@@ -22,8 +18,16 @@ RSpec.describe 'Authorization DSL' do
 
     subject { described_class.authorize_access_for(*example_params) }
 
+    it 'initializes a ruleset accessible with .access_authorization' do
+      subject
+      expect(described_class).to respond_to :access_authorization
+      expect(described_class.access_authorization)
+        .to be_kind_of Authegy::Authorization::AccessRuleSet
+    end
+
     it 'adds a rule to the access_authorization object' do
-      expect { subject }.to change { described_class.access_authorization.count }.by 1
+      subject
+      expect(described_class.access_authorization.count).to eq 1
     end
 
     it 'adds the "run_resource_authorization" callback' do
@@ -45,7 +49,8 @@ RSpec.describe 'Authorization DSL' do
       let(:example_params) { [:authors, of: 'group_post'] }
 
       it 'does not add any new rules to the access_authorization object' do
-        expect { subject }.not_to change { described_class.access_authorization.count }
+        subject
+        expect(described_class.access_authorization.count).to eq 0
       end
   
       it 'does not add the "run_resource_authorization" callback' do
