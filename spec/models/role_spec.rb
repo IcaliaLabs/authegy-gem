@@ -19,5 +19,11 @@ RSpec.describe Authegy::Role, type: :model do
       is_expected.not_to allow_value('Test').for(:name)
     end
   end
+
+  describe 'associations' do
+    it 'has many "assignments", inverse of "role"' do
+      is_expected.to have_many(:assignments).inverse_of(:role)
+    end
+  end
    
 end
