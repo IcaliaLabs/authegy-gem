@@ -5,6 +5,8 @@ RSpec.describe Authegy::Role, type: :model do
   let(:described_class) do |example|
     ::Role
   end
+  let(:example_person) { ::Person.create! email: 'example@person.com' }
+  let(:example_role) { ::Role.create! name: 'example_role' }
   
   describe 'persistence' do
     it "uses the 'roles' table" do
@@ -30,6 +32,15 @@ RSpec.describe Authegy::Role, type: :model do
                                 .through(:assignments)
                                 .source(:actor)
     end
+
+    it 'actors are unique' do
+        [example_person, example_person].each do |person|
+          ::RoleAssignment.create! actor: person,
+                                   role: example_role
+        end
+
+        expect(example_role.actors.count).to eq 1
+      end
   end
    
 end
