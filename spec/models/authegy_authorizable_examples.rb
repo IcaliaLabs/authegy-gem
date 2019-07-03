@@ -4,10 +4,6 @@ require 'rails_helper'
 
 RSpec.shared_examples 'of an Authegy::Authorizable model' do
 
-  let(:described_class) do |example|
-    ::Person
-  end
-
   let(:example_role) { ::Role.create! name: 'example_role' }
   let(:example_person) { ::Person.create! email: 'example@person.com' }
   let(:example_owner) { ::Person.create! email: 'owner@person.com' }
@@ -60,8 +56,46 @@ RSpec.shared_examples 'of an Authegy::Authorizable model' do
         end
 
       end
-
-
     end
+
+    describe '.has_role? ' do
+      
+      let(:another_example_role) { ::Role.create! name: 'another_example_role' }
+
+      context 'without a context resource' do
+
+        it 'finds that the person has the expected role' do
+          ::RoleAssignment.create! actor: example_person, role: example_role
+          expect(example_person.has_role?(example_role.name)).to be_truthy
+        end
+
+        it 'finds that the person hasnt the expected role' do
+          ::RoleAssignment.create! actor: example_person, role: another_example_role
+          expect(example_person.has_role?(example_role.name)).to be_falsey
+        end
+      end
+
+      context 'with a context resource' do
+
+        let(:example_resource_owner) { ::Person.create! email: 'owner@example.com' }
+      
+        let!(:example_resource) { UserGroup.create! name: 'example-group', owner: example_resource_owner }  
+
+        it 'finds that the person has the expected role for the given resource' do
+          ::RoleAssignment.create! actor: example_person, 
+                                   role: example_role,
+                                   resource: example_resource
+          expect(example_person.has_role?(example_role.name)).to be_truthy
+        end
+
+        it 'finds that the person hasnt the expected role for the given resource' do
+          ::RoleAssignment.create! actor: example_person, 
+                                   role: another_example_role,
+                                   resource: example_resource
+          expect(example_person.has_role?(example_role.name)).to be_falsey
+        end
+      end
+    end
+
   end
 end
