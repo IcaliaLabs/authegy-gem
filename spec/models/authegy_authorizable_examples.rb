@@ -7,6 +7,8 @@ RSpec.shared_examples 'of an Authegy::Authorizable model' do
   let(:example_role) { ::Role.create! name: 'example_role' }
   let(:example_person) { ::Person.create! email: 'example@person.com' }
   let(:example_owner) { ::Person.create! email: 'owner@person.com' }
+  let(:example_resource_owner) { ::Person.create! email: 'owner@example.com' }
+  let(:example_resource) { UserGroup.create! name: 'example-group', owner: example_resource_owner } 
 
   describe "Authegy::Authorizable associations" do
     it 'has many role assignments' do
@@ -50,9 +52,8 @@ RSpec.shared_examples 'of an Authegy::Authorizable model' do
 
       context 'with a context resource' do
 
-        resource = 'admin'
         it 'assings a role to a person' do
-          expect(example_person.assign_role(example_role, resource)).to eq ::RoleAssignment.first
+          expect(example_person.assign_role(example_role, example_resource)).to eq ::RoleAssignment.first
         end
 
       end
@@ -75,11 +76,7 @@ RSpec.shared_examples 'of an Authegy::Authorizable model' do
         end
       end
 
-      context 'with a context resource' do
-
-        let(:example_resource_owner) { ::Person.create! email: 'owner@example.com' }
-      
-        let!(:example_resource) { UserGroup.create! name: 'example-group', owner: example_resource_owner }  
+      context 'with a context resource' do 
 
         it 'finds that the person has the expected role for the given resource' do
           ::RoleAssignment.create! actor: example_person, 
