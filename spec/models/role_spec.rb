@@ -24,6 +24,12 @@ RSpec.describe Authegy::Role, type: :model do
     it 'has many "assignments", inverse of "role"' do
       is_expected.to have_many(:assignments).inverse_of(:role)
     end
+
+    it 'has many actors' do
+        is_expected.to have_many(:actors)
+                                .through(:assignments)
+                                .source(:actor)
+    end
   end
    
 end
