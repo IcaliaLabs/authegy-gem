@@ -13,7 +13,7 @@ RSpec.describe Authegy::RoleAssignment, type: :model do
 
   describe 'associations' do
     it 'belongs to "actor"' do
-      is_expected.to belong_to(:actor)
+      is_expected.to belong_to(:actor).with_foreign_key :actor_id
     end
 
     it 'belongs to "role"' do
