@@ -1,8 +1,12 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
+require_relative 'authegy_authorizable_examples'
 
 RSpec.describe Authegy::User, type: :model do
   let(:described_class) { |example| ::User }
+
+  include_examples 'of an Authegy::Authorizable model methods'
   
   describe 'persistence' do
     it "uses the 'users' table" do
