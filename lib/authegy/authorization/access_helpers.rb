@@ -8,25 +8,41 @@ module Authegy
     module AccessHelpers
       extend ActiveSupport::Concern
 
-      included do
-        mattr_reader :access_authorization,
-                     default: Authegy::Authorization::AccessRuleSet.new
-      end
-
       module ClassMethods
         def authorize_access_for(*args)
+          ensure_access_authorization_rules_are_initialized
+          
+          return unless added_rules = add_rules_from_args(*args)
+          restrictable_class = added_rules.map(&:restrictable_class).uniq.last
+
+          ensure_authorization_callbacks_are_configured
+          ensure_authorized_scope_helper_is_available_for restrictable_class
+        end
+
+        private
+
+        def add_rules_from_args(*args)
+          rule_attributes = build_rule_attributes_from_args(*args)
+          return unless rule_attributes.present?
+          access_authorization.add rule_attributes
+        end
+
+        def build_rule_attributes_from_args(*args)
           options = args.last.is_a?(Hash) ? args.pop : {}
           restrictable_class = options[:to]
           # Access rules are useless without a class to restrict access to:
           return unless restrictable_class.present?
 
-          access_authorization
-            .add subject_path: options.fetch(:of, nil),
-                 restrictable_class: restrictable_class,
-                 subjects: Helpers.normalize_items_on_dsl(args)
+          {
+            subject_path: options.fetch(:of, nil),
+            restrictable_class: restrictable_class,
+            subjects: Helpers.normalize_items_on_dsl(args)
+          }
+        end
 
-          ensure_authorization_callbacks_are_configured
-          ensure_authorized_scope_helper_is_available_for restrictable_class
+        def ensure_access_authorization_rules_are_initialized
+          mattr_reader :access_authorization,
+                       default: Authegy::Authorization::AccessRuleSet.new
         end
 
         def ensure_authorized_scope_helper_is_available_for(restrictable_class)
