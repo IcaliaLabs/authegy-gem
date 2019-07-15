@@ -30,6 +30,12 @@ RSpec.describe Authegy::User, type: :model do
       end
     end
 
-    
+    context 'when person is present' do
+      let(:example_user) { described_class.create!(email: "example@email.com", password: "123456789") }
+      it 'assigns the email value to the person' do
+        expect(example_user.person.id.blank?).to be_falsey
+        expect(example_user.email=('another@email.com')).to eq example_user.person.email 
+      end
+    end
   end
 end
