@@ -19,4 +19,17 @@ RSpec.describe Authegy::User, type: :model do
       is_expected.to belong_to(:person) .inverse_of(:user) .with_foreign_key :id
     end
   end
+
+  describe '.email=' do
+
+    context 'when person is not present' do
+      let(:example_user) { described_class.new(email: "example@email.com", password: "123456789") }
+      it 'assigns the email value to the person' do
+        expect(example_user.person.id.blank?).to be_truthy
+        expect(example_user.email=('another@email.com')).to eq example_user.person.email
+      end
+    end
+
+    
+  end
 end
