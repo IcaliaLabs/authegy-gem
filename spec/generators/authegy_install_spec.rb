@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'authegy:install', type: :generator, skip: true do
+RSpec.describe 'authegy:install', type: :generator do
   before(:context) do
     # Setup
     setup_example_app_context 'example_blank_app'
