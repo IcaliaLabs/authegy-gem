@@ -76,5 +76,4 @@ promotions:
     auto_promote_on:
       - result: passed
         branch:
-          - feature/ci-cd
           - ^refs\/tags\/v(\d+)\.(\d+)\.(\d+)(\.rc\d+)?$
