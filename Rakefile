@@ -1,24 +1,18 @@
-# frozen_string_literal: true
+$LOAD_PATH.unshift File.expand_path('./lib', __dir__)
 
-begin
-  require 'bundler/setup'
-rescue LoadError
-  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+require 'rspec/core/rake_task'
+require 'authegy/version'
+
+RSpec::Core::RakeTask.new(:spec)
+
+task default: :spec
+
+desc "Build authegy-#{Authegy::VERSION}.gem"
+task :build do
+  system 'gem build authegy.gemspec'
 end
 
-require 'rdoc/task'
-
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Authegy'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.md')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+desc "Build and push authegy-#{Authegy::VERSION}.gem"
+task release: :build do
+  system "gem push authegy-#{Authegy::VERSION}.gem"
 end
-
-APP_RAKEFILE = File.expand_path('spec/dummy/Rakefile', __dir__)
-load 'rails/tasks/engine.rake'
-
-load 'rails/tasks/statistics.rake'
-
-require 'bundler/gem_tasks'
