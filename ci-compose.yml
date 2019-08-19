@@ -18,4 +18,5 @@ services:
         - 564922552600.dkr.ecr.eu-central-1.amazonaws.com/icalialabs/authegy-gem:testing
     command: bundle exec rake spec
     volumes:
-      - ${HOME}/.gem/credentials:/root/.gem/credentials
+      # Given the Docker image sets $HOME to `/usr/src`...
+      - ${HOME}/.gem/credentials:/usr/src/.gem/credentials:ro
