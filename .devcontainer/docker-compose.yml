@@ -1,0 +1,41 @@
+version: '3.7'
+
+volumes:
+  authegy_gem_bundle:
+  authegy_node_modules:
+  authegy_vs_code_server:
+
+services:
+  lib: &lib
+    image: vovimayhem/authegy:development
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        - DEVELOPER_UID=${UID:-1000}
+        - DEVELOPER_USER=${USER:-you}
+    ports:
+      - ${AUTHEGY_WEB_PORT:-3000}:3000
+    volumes:
+      - .:/usr/src # Mount the whole workspace directory
+      - ~/.gnupg:/usr/src/.gnupg:ro
+      - authegy_gem_bundle:/usr/local/bundle
+      - authegy_node_modules:/usr/src/node_modules
+      - authegy_vs_code_server:/usr/src/.vscode-server
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+    # Keep the stdin open, so we can attach to our app container's process
+    # and do things such as byebug, etc:
+    stdin_open: true
+
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+
+    # [Optional] Required for ptrace-based debuggers like C++, Go, and Rust
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined

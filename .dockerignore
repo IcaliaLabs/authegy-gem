@@ -8,9 +8,11 @@
 /tmp/
 .local
 **/.DS_Store
+node_modules/
 
 # rspec failure tracking
 .rspec_status
+spec/examples.txt
 
 # Ignore fetchable linter config
 .reek
@@ -21,7 +23,38 @@
 
 # Ignore docker stuff:
 /Dockerfile
+/ci-compose.yml
 /docker-compose.yml
+/docker-compose.override.yml
+
+# Ignore dummy temp:
+spec/dummy/tmp/*
 
 # Ignore gem builds
 /authegy-*.gem
+
+# Ignore the `.config` file that gets created from the app container:
+.config/
+
+# Ignore VSCode folders:
+.vscode
+.vscode-server
+.devcontainer
+
+# Ignore VIM artifacts:
+.viminfo
+
+# Ignore solargraph config
+.solargraph
+
+# Ignore other generated files that we don't care about:
+.local
+.bundle
+.npm
+.cache
+.gem
+.gnupg
+.semaphore
+
+# Ignore all git:
+.git*
