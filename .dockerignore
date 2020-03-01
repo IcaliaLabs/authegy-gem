@@ -5,7 +5,6 @@
 /doc/
 /pkg/
 /spec/reports/
-/tmp/
 .local
 **/.DS_Store
 node_modules/
@@ -13,6 +12,10 @@ node_modules/
 # rspec failure tracking
 .rspec_status
 spec/examples.txt
+
+# Ignore tmp but not the .keep file
+tmp/*
+!tmp/.keep
 
 # Ignore fetchable linter config
 .reek

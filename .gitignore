@@ -5,9 +5,12 @@
 /doc/
 /pkg/
 /spec/reports/
-/tmp/
 .local
 **/.DS_Store
+
+# Ignore tmp but not the .keep file
+tmp/*
+!tmp/.keep
 
 # rspec failure tracking
 .rspec_status
