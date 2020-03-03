@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'active_support/dependencies'
-require 'devise'
-require 'authegy/engine'
 
 #= Authegy
 #
@@ -42,4 +40,6 @@ module Authegy
       }
     end
   end
+
+  require 'authegy/railtie' if defined?(Rails)
 end

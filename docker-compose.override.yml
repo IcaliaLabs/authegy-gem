@@ -1,8 +1,5 @@
 version: '3.7'
 
-volumes:
-  dummy_node_modules: # See comment below on 'test' service's volume
-
 services:
 
   lib: &lib
@@ -12,12 +9,12 @@ services:
       dockerfile: Dockerfile
       target: development
       args:
-      - DEVELOPER_UID=${UID:-1000}
-      - DEVELOPER_USER=${USER:-you}
+        - DEVELOPER_UID=${UID:-1000}
+        - DEVELOPER_USER=${USER:-you}
     volumes:
-    # Mount our library code directory (".") into our containers at the
-    # "/usr/src" folder:
-    - .:/usr/src
+      # Mount our library code directory (".") into our containers at the
+      # "/usr/src" folder:
+      - .:/usr/src
 
     # Keep the stdin open, so we can attach to our app container's process
     # and do things such as byebug, etc:
@@ -30,7 +27,7 @@ services:
     <<: *lib
     entrypoint: /usr/src/bin/dummy-entrypoint.sh
     ports:
-    - ${AUTHEGY_WEB_PORT:-3000}:3000
+      - ${AUTHEGY_WEB_PORT:-3000}:3000
     # depends_on: [ "postgres" ]
     command: rails server -p 3000 -b 0.0.0.0
     environment:
