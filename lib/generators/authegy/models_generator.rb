@@ -38,11 +38,9 @@ class ModelsGenerator < ActiveRecord::Generators::Base
     copy_file 'role_assignment_model.rb', 'app/models/role_assignment.rb'
   end
 
-  def self.rails5_and_up?
+  def rails5_and_up?
     Rails::VERSION::MAJOR >= 5
   end
-
-  delegate :rails_5_and_up?, to: :class
 
   def migration_version
     "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]" if rails5_and_up?

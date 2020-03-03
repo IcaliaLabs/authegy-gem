@@ -1,0 +1,14 @@
+{
+  "editor.rulers": [
+    80
+  ],
+  "files.trimTrailingWhitespace": true,
+  "files.exclude": {
+    ".*_hist*": true,
+    ".bundle": true,
+    ".gitconfig": true,
+    ".gnupg": true,
+    ".local": true,
+    ".vscode-server": true
+  },
+}

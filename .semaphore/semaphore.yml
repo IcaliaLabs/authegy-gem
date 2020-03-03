@@ -1,0 +1,69 @@
+version: v1.0
+
+name: Test & Build
+
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+auto_cancel:
+  running:
+    when: "branch != 'master'"
+
+global_job_config:
+  secrets:
+    - name: icalia-labs-semaphore-registry
+  prologue:
+    commands:
+      - checkout
+
+      # Add the scripts for CI to the PATH:
+      - export PATH=$(pwd)/.semaphore/bin:${PATH}
+
+      # Generate the dotenv file:
+      - generate-dotenv-file > .env
+
+      # Alias docker-compose commands as 'ci-compose':
+      - alias ci-compose="docker-compose --file docker-compose.yml --file ci-compose.yml"
+
+      # Log in to Semaphore CI Docker Registry:
+      - docker login -u "$SEMAPHORE_REGISTRY_USERNAME" -p "$SEMAPHORE_REGISTRY_PASSWORD" https://icalia-labs.registry-beta.semaphoreci.com
+
+blocks:
+  - name: Build Test Image
+    task:
+      secrets:
+        - name: icalia-labs-semaphore-registry
+      jobs:
+        - name: Authegy Image Build
+          commands:
+            # Pull the images referenced in the 'cache_from' key:
+            - docker-image-manager download-cache authegy
+
+            # Build the test image:
+            - ci-compose build --pull authegy
+
+            # Tag & Push test image so we can use it on image cache:
+            - docker-image-manager tag-and-push authegy
+
+  - name: Run Tests
+    task:
+      prologue:
+        commands:
+          # Pull the images referenced in the 'cache_from' key:
+          - docker-image-manager download-cache authegy
+      jobs:
+        - name: Authegy Rspec & Build
+          commands:
+            # Run the tests
+            - ci-compose run authegy rake spec
+
+            # Build the gem
+            - ci-compose run authegy rake build
+
+promotions:
+  - name: Publish
+    pipeline_file: publishing.yml
+    auto_promote:
+      when: "result = 'passed' and tag =~ '^v(\d+)\.(\d+)\.(\d+)(\.rc\d+)?$'"

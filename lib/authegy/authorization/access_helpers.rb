@@ -8,11 +8,6 @@ module Authegy
     module AccessHelpers
       extend ActiveSupport::Concern
 
-      included do
-        mattr_reader :access_authorization,
-                     default: Authegy::Authorization::AccessRuleSet.new
-      end
-
       module ClassMethods
         delegate :normalize_items_on_dsl, to: Helpers
         def authorize_access_for(*associated_roles, **options)
@@ -31,8 +26,9 @@ module Authegy
                  restrictable_class: restrictable_class,
                  subjects: normalize_items_on_dsl(associated_roles)
 
-          ensure_authorization_callbacks_are_configured
-          ensure_authorized_scope_helper_is_available_for restrictable_class
+        def ensure_access_authorization_rules_are_initialized
+          mattr_reader :access_authorization,
+                       default: Authegy::Authorization::AccessRuleSet.new
         end
 
         def ensure_authorized_scope_helper_is_available_for(restrictable_class)

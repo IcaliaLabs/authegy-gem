@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-lib = File.expand_path('lib', __dir__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+$:.push File.expand_path('lib', __dir__)
+
+# Maintain your gem's version:
 require 'authegy/version'
 
-# rubocop:disable Metrics/BlockLength
+# Describe your gem and declare its dependencies:
+# rubocop:disable Metrics/BlockLengthq
 Gem::Specification.new do |spec|
   spec.name          = 'authegy'
   spec.version       = Authegy::VERSION
@@ -37,7 +39,7 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added
   # into git.
   spec.files = Dir[
-    '{app,config,lib}/**/*',
+    '{lib}/**/*',
     'CHANGELOG.md',
     'LICENSE.md',
     'README.md'
@@ -47,15 +49,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'rails', '~> 5.2'
-
+  spec.add_dependency 'rails', '~> 5', '>= 5.2.3'
   spec.add_dependency 'devise', '~> 4.6', '>= 4.6.1'
 
-  spec.add_development_dependency 'sqlite3', '~> 1.3.6'
-
-  spec.add_development_dependency 'bundler', '~> 1.17'
-  spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency "sqlite3"
   spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'shoulda-matchers'
 end
 # rubocop:enable Metrics/BlockLength

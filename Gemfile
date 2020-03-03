@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
-
-ruby '2.6.1'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Declare your gem's dependencies in authegy.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -16,10 +13,10 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
+gem 'devise'
+
 # To use a debugger
 group :development, :test do
-  gem 'i18n', '~> 1.5.3'
-
   gem 'byebug'
   gem 'pry-rails'
 end

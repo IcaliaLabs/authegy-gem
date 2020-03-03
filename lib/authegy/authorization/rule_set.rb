@@ -41,7 +41,7 @@ module Authegy
         rules.select { |rule| rule.restrictable_class == restrictable_class }
       end
 
-      delegate :empty?, :any?, to: :rules
+      delegate :empty?, :any?, :each, to: :rules
 
       def add(subjects:, subject_path: nil, restrictable_class: nil)
         path_segments = subject_path.split '.'
@@ -49,7 +49,7 @@ module Authegy
         resource_class = first_segment.to_s.classify.safe_constantize
         return unless resource_class.present?
 
-        subjects.each do |subject|
+        subjects.map do |subject|
           rule_class, reflection_chain = class_and_reflection(
             resource_class,
             subject,
@@ -62,6 +62,7 @@ module Authegy
                                 restrictable_class: restrictable_class
 
           rule.add_subject subject
+          rule
         end
       end
 
